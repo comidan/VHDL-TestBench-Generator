@@ -48,7 +48,7 @@ public class VHDLTestBenchCreator {
                         "\n" +
                         "\n" +
                         "architecture projecttb of project_tb is\n" +
-                        "constant c_CLOCK_PERIOD		: time := 15 ns;\n" +
+                        "constant c_CLOCK_PERIOD		: time := 100 ns;\n" +
                         "signal   tb_done		: std_logic;\n" +
                         "signal   mem_address		: std_logic_vector (15 downto 0) := (others => '0');\n" +
                         "signal   tb_rst		    : std_logic := '0';\n" +

@@ -26,31 +26,36 @@ public class MultithreadedTestBenchGenerationComputation {
     private static final AtomicInteger completionCounter = new AtomicInteger(0);
     private static final ScheduledExecutorService threadPool = Executors.newScheduledThreadPool(MAX_THREADS);
     
-    private static HashMap<Integer, Future<?>> futureMap;
+    private HashMap<Integer, Future<?>> futureMap;
+    private final JLabel label;
+    private final JProgressBar progressBar;
     
     private int maxTestValue;
     
-    public MultithreadedTestBenchGenerationComputation(int maxTestValue) {
+    public MultithreadedTestBenchGenerationComputation(int maxTestValue, JLabel label, JProgressBar progressBar) {
         this.maxTestValue = maxTestValue;
         futureMap = new HashMap<>();
+        this.label = label;
+        this.progressBar = progressBar;
+
     }
     
     
     public void addThread(int startIndex, int endIndex, JLabel label, JProgressBar progressBar) {
-        futureMap.put(futureMap.size(), threadPool.submit(compute(startIndex, endIndex, label, progressBar)));
+        futureMap.put(futureMap.size(), threadPool.submit(compute(startIndex, endIndex)));
     }
     
-    private Runnable compute(int startIndex, int endIndex, JLabel label, JProgressBar progressBar) {
+    private Runnable compute(int startIndex, int endIndex) {
       return () -> {
             
             VHDLTestBenchCreator testBenchCreator = new VHDLTestBenchCreator();
             BufferedWriter writer = null;
             File testBench = null;
             try {
-                File directory = new File("Test_Benches_folder4");
+                File directory = new File("Test_Benches_1");
                 directory.mkdir();
                 for(int i = startIndex; i < endIndex; i++) {
-                        testBench = new File("Test_Benches_folder4\\tb_FSM_" + i + ".vhd");
+                        testBench = new File("Test_Benches_1\\tb_FSM_" + i + ".vhd");
                         writer = new BufferedWriter(new FileWriter(testBench));
                         writer.write(testBenchCreator.generateTestBench());
                         writer.flush();

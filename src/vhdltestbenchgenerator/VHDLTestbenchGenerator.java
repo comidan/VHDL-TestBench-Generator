@@ -22,9 +22,8 @@ import javax.swing.JProgressBar;
  * @author Daniele
  */
 public class VHDLTestbenchGenerator {
-    
-    private static final AtomicInteger completionCounter = new AtomicInteger(0);
-    private static final int maxTestValue = 200000;
+
+    private static final int maxTestValue = 1000;
     private static final int maxScheduledThreadPool = 8;
     private static MultithreadedTestBenchGenerationComputation multithreadedTestBenchCreator;
     
@@ -40,15 +39,15 @@ public class VHDLTestbenchGenerator {
         frame.setLocationRelativeTo(null);
         frame.setResizable(false);
         JPanel panel = new JPanel(new FlowLayout());
-        JProgressBar progressBar = new JProgressBar(0, maxTestValue);
-        JLabel label = new JLabel(progressBar.getPercentComplete() *100 + " %  (" + progressBar.getValue() + " / " + progressBar.getMaximum() + ")");
+        progressBar = new JProgressBar(0, maxTestValue);
+        label = new JLabel(progressBar.getPercentComplete() *100 + " %  (" + progressBar.getValue() + " / " + progressBar.getMaximum() + ")");
         panel.add(progressBar);
         panel.add(label);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setContentPane(panel);
         frame.pack();
         frame.setVisible(true);
-        multithreadedTestBenchCreator = new MultithreadedTestBenchGenerationComputation(maxTestValue);
+        multithreadedTestBenchCreator = new MultithreadedTestBenchGenerationComputation(maxTestValue, label, progressBar);
         for(int i = 0; i < maxScheduledThreadPool; i++)
             multithreadedTestBenchCreator.addThread(i / maxScheduledThreadPool * maxTestValue, (i + 1) / maxScheduledThreadPool * maxTestValue - 1, label, progressBar);
     }
