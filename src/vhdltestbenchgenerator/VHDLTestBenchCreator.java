@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package vhdltestbenchgenerator;
 
 import java.util.ArrayList;
@@ -108,9 +103,9 @@ public class VHDLTestBenchCreator {
                         "     if enable_wire = '1' then\n" +
                         "      if mem_we = '1' then\n" +
                         "       RAM(conv_integer(mem_address))              <= mem_i_data;\n" +
-                        "       mem_o_data                      <= mem_i_data;\n" +
+                        "       mem_o_data                      <= mem_i_data after 2 ns;\n" +
                         "      else\n" +
-                        "       mem_o_data <= RAM(conv_integer(mem_address));\n" +
+                        "       mem_o_data <= RAM(conv_integer(mem_address)) after 2 ns;\n" +
                         "      end if;\n" +
                         "     end if;\n" +
                         "    end if;\n" +
@@ -118,22 +113,21 @@ public class VHDLTestBenchCreator {
                         "\n" +
                         "test : process is\n" +
                         "\n" +
-                        "    begin\ntest_runner_setup(runner, runner_cfg);\n" +
-                        "                        wait for 100 ns;\n" +
-                        "                        wait for c_CLOCK_PERIOD;\n" +
-                        "                        tb_rst <= '1';\n" +
-                        "                        wait for c_CLOCK_PERIOD;\n" +
-                        "                        tb_rst <= '0';\n" +
-                        "                        wait for c_CLOCK_PERIOD;\n" +
-                        "                        tb_start <= '1';\n" +
-                        "                        wait for c_CLOCK_PERIOD; \n" +
-                        "                        tb_start <= '0';\n" +
-                        "                        wait until tb_done = '1';\n" +
-                        "                        wait until tb_done = '0';\n" +
-                        "                        wait until rising_edge(tb_clk);\n");
-        output.append(  "if(RAM(19) /= \"" + result + "\") then\n" +
-"                        	assert false severity failure;\n" +
-"                       	end if;\n" +
+                        "    begin\n" +
+                        "        test_runner_setup(runner, runner_cfg);\n" +
+                        "        wait for 100 ns;\n" +
+                        "        wait for c_CLOCK_PERIOD;\n" +
+                        "        tb_rst <= '1';\n" +
+                        "        wait for c_CLOCK_PERIOD;\n" +
+                        "        tb_rst <= '0';\n" +
+                        "        wait for c_CLOCK_PERIOD;\n" +
+                        "        tb_start <= '1';\n" +
+                        "        wait for c_CLOCK_PERIOD;\n" +
+                        "        wait until tb_done = '1';\n" +
+                        "        wait for c_CLOCK_PERIOD;\n" +
+                        "        tb_start <= '0';\n" +
+                        "        wait until tb_done = '0';\n");
+        output.append(  "assert RAM(19) = \"" + result + "\" severity failure;\n" +
                         "test_runner_cleanup(runner);\n" +
                         "    end process test;\n" +
                         "end projecttb;");

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package vhdltestbenchgenerator;
 
 import java.io.BufferedWriter;
@@ -52,10 +47,10 @@ public class MultithreadedTestBenchGenerationComputation {
             BufferedWriter writer = null;
             File testBench = null;
             try {
-                File directory = new File("Test_Benches_1");
+                File directory = new File("Test_Benches");
                 directory.mkdir();
                 for(int i = startIndex; i < endIndex; i++) {
-                        testBench = new File("Test_Benches_1\\tb_FSM_" + i + ".vhd");
+                        testBench = new File("Test_Benches\\tb_FSM_" + i + ".vhd");
                         writer = new BufferedWriter(new FileWriter(testBench));
                         writer.write(testBenchCreator.generateTestBench());
                         writer.flush();
