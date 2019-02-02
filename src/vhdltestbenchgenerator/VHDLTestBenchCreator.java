@@ -10,7 +10,6 @@ import java.util.Random;
 public class VHDLTestBenchCreator {
     
     private static final int MAX_POINTS = 8;
-    private static final int MAX_RAM = 19;
     private static final int MAX_VALUE = 256;
     
     private Point fixedPoint;
@@ -177,6 +176,4 @@ public class VHDLTestBenchCreator {
             }
         return output.toString();
     }
-    
-    
 }

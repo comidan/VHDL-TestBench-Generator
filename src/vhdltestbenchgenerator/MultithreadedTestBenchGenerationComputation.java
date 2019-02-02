@@ -49,18 +49,17 @@ public class MultithreadedTestBenchGenerationComputation {
             try {
                 File directory = new File("Test_Benches");
                 directory.mkdir();
-                for(int i = startIndex; i < endIndex; i++) {
+                for(int i = startIndex; i <= endIndex; i++) {
                         testBench = new File("Test_Benches\\tb_FSM_" + i + ".vhd");
                         writer = new BufferedWriter(new FileWriter(testBench));
                         writer.write(testBenchCreator.generateTestBench());
                         writer.flush();
-                        System.out.println(completionCounter.get() + " : " + (completionCounter.get() / (double)maxTestValue * 100) + " %");
                         synchronized(label) {
                             synchronized(progressBar) {
+                                progressBar.setValue(completionCounter.incrementAndGet());
+                                System.out.println(completionCounter.get() + " : " + (completionCounter.get() / (double)maxTestValue * 100) + " %");
                                 label.setText("<html>" + String.format("%.2f", progressBar.getPercentComplete() * 100) + " %  (" + progressBar.getValue() + " / " + 
-                                                              progressBar.getMaximum() + ")<br> Generated : " + i + " / " + maxTestValue + "<html>");
-                                completionCounter.incrementAndGet();
-                                progressBar.setValue(completionCounter.get());
+                                                              progressBar.getMaximum() + ")<br> Generated : " + completionCounter.get() + " / " + maxTestValue + "<html>");
                             }
                         }
                 }
